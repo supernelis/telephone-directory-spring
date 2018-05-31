@@ -1,0 +1,110 @@
+swagger: '2.0'
+info:
+  description: |
+    This is an example swagger description for a telephone directory.
+  version: 0.0.1
+  title: Swagger Telephone directory
+  contact:
+    email: nelis@boucke.be
+# host: localhost:9000
+# basePath: /v2
+# schemes:
+# - http
+paths:
+  /:
+    get:
+      summary: 'Greetings'
+      produces:
+        - 'text/plain'
+      responses:
+        200:
+          description: 'Returns hello world'
+  /contacts:
+    get:
+      summary: 'Get all contacts'
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: 'Returns all the contacts'
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Contact"
+        500:
+          description: 'Something went wrong. Often happens if the application is not correctly started or the connection witht the database has been broken.'
+    post:
+      summary: 'Add a new contact'
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Contact that needs to be added to the phonebook"
+        required: true
+        schema:
+          $ref: "#/definitions/Contact"
+      responses:
+        200:
+          description: "Successfully added"
+  /contacts/{id}:
+    get:
+      summary: "Get the contact by id"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Returns the contact"
+          schema:
+            $ref: "#/definitions/Contact"
+        404:
+          description: "Contact not found"
+    put:
+      summary: "Update the contact by id"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Contact that needs to be added to the phonebook"
+        required: true
+        schema:
+          $ref: "#/definitions/Contact"
+      responses:
+        201:
+          description: "Saved"
+        404:
+          description: "Contact not found"
+    delete:
+      summary: "Remove the contact by id"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        201:
+          description: "Removed"
+        404:
+          description: "Contact not found"
+definitions:
+  Contact:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      phoneNumber:
+        type: "string"
